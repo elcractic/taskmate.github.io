@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | TaskMate AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1b9a;
+            --secondary: #ff00ff;
+            --accent: #00ffff;
+            --dark: #0a0a12;
+            --darker: #050508;
+            --card-bg: #1a1a2e;
+            --text: #e0e0ff;
+            --text-muted: #a0a0c0;
+            --glow: 0 0 15px rgba(138, 43, 226, 0.7);
+            --error: #ff3860;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        /* Cyber Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+            pointer-events: none;
+        }
+        
+        /* Animated Circuit Lines */
+        .circuit-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            height: 1px;
+            animation: circuitFlow 8s linear infinite;
+            opacity: 0.3;
+            filter: drop-shadow(var(--glow));
+        }
+        
+        @keyframes circuitFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Floating Data Nodes */
+        .data-nodes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .data-node {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px var(--accent));
+            opacity: 0.7;
+            animation: nodePulse 3s infinite ease-in-out;
+        }
+        
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+        }
+        
+        /* Navigation - Cyberpunk Style */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 18, 0.8);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .logo i {
+            margin-right: 12px;
+            color: var(--secondary);
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--primary);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Register Container */
+        .register-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 8rem 5% 5rem;
+            position: relative;
+        }
+        
+        .register-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 
+                0 0 50px rgba(138, 43, 226, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            z-index: 2;
+        }
+        
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .register-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+        
+        .register-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background-color: rgba(10, 10, 18, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        /* Password Strength Meter */
+        .password-strength {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            background-color: var(--error);
+            transition: all 0.3s ease;
+        }
+        
+        /* Terms Checkbox */
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        
+        .terms-check input {
+            margin-right: 1rem;
+            margin-top: 0.3rem;
+            accent-color: var(--primary);
+        }
+        
+        .terms-check label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .terms-check a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .terms-check a:hover {
+            text-shadow: 0 0 5px var(--secondary);
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--primary);
+        }
+        
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(138, 43, 226, 0.5), transparent);
+        }
+        
+        .divider::before {
+            margin-right: 1rem;
+        }
+        
+        .divider::after {
+            margin-left: 1rem;
+        }
+        
+        /* Social Login */
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(10, 10, 18, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+        
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .login-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            text-shadow: 0 0 5px var(--secondary);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            color: white;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 5px var(--secondary);
+        }
+        
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .register-card {
+                padding: 2rem;
+            }
+            
+            .register-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 1.5rem;
+            }
+            
+            .register-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .social-login {
+                gap: 1rem;
+            }
+            
+            .social-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="circuit-lines" id="circuitLines"></div>
+    <div class="data-nodes" id="dataNodes"></div>
+    
+    <nav>
+        <div class="logo">
+            <i class="fas fa-robot"></i>
+            <span>TaskMate AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Features</a>
+            <a href="#">Pricing</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <button class="cta-button">Login</button>
+    </nav>
+    
+    <main class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <h1>CREATE ACCOUNT</h1>
+                <p>Join the future of productivity with TaskMate AI</p>
+            </div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">USERNAME</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                    <div class="error-message" id="usernameError">Username must be at least 4 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">EMAIL</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">PASSWORD</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-meter" id="strengthMeter"></div>
+                    </div>
+                    <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">CONFIRM PASSWORD</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                </div>
+                
+                <div class="terms-check">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                
+                <button type="submit" class="submit-btn">REGISTER</button>
+                
+                <div class="divider">OR CONTINUE WITH</div>
+                
+                <div class="social-login">
+                    <div class="social-btn">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-microsoft"></i>
+                    </div>
+                </div>
+                
+                <div class="login-link">
+                    Already have an account? <a href="#">Login here</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Support</a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 TaskMate AI. All rights reserved.
+        </div>
+    </footer>
+    
+    <script>
+        // Create circuit lines
+        function createCircuitLines() {
+            const container = document.getElementById('circuitLines');
+            const lineCount = 15;
+            
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.classList.add('circuit-line');
+                
+                // Random properties
+                const top = Math.random() * 100;
+                const width = Math.random() * 100 + 50;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 5 + 5;
+                
+                line.style.top = `${top}%`;
+                line.style.width = `${width}%`;
+                line.style.animationDelay = `${delay}s`;
+                line.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(line);
+            }
+        }
+        
+        // Create data nodes
+        function createDataNodes() {
+            const container = document.getElementById('dataNodes');
+            const nodeCount = 30;
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.classList.add('data-node');
+                
+                // Random properties
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 3;
+                const duration = Math.random() * 2 + 2;
+                
+                node.style.left = `${left}%`;
+                node.style.top = `${top}%`;
+                node.style.animationDelay = `${delay}s`;
+                node.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(node);
+            }
+        }
+        
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Character variety checks
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            return strength;
+        }
+        
+        // Update password strength meter
+        function updateStrengthMeter(password) {
+            const strength = checkPasswordStrength(password);
+            const meter = document.getElementById('strengthMeter');
+            
+            if (password.length === 0) {
+                meter.style.width = '0%';
+                meter.style.backgroundColor = 'transparent';
+                return;
+            }
+            
+            switch(strength) {
+                case 0:
+                case 1:
+                    meter.style.width = '25%';
+                    meter.style.backgroundColor = 'var(--error)';
+                    break;
+                case 2:
+                    meter.style.width = '50%';
+                    meter.style.backgroundColor = '#ff9f1c';
+                    break;
+                case 3:
+                    meter.style.width = '75%';
+                    meter.style.backgroundColor = '#2ec4b6';
+                    break;
+                case 4:
+                case 5:
+                    meter.style.width = '100%';
+                    meter.style.backgroundColor = '#2ecc71';
+                    break;
+            }
+        }
+        
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Username validation
+            if (username.length < 4) {
+                document.getElementById('usernameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('usernameError').style.display = 'none';
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+            
+            // Password validation
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('passwordError').style.display = 'none';
+            }
+            
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            createCircuitLines();
+            createDataNodes();
+            
+            // Password strength real-time check
+            document.getElementById('password').addEventListener('input', (e) => {
+                updateStrengthMeter(e.target.value);
+            });
+            
+            // Form submission
+            document.getElementById('registerForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Form is valid, proceed with registration
+                    alert('Registration successful! Welcome to TaskMate AI.');
+                    // In a real app, you would send the data to your server here
+                }
+            });
+            
+            // Social button animations
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    const icon = btn.querySelector('i');
+                    icon.style.transform = 'scale(1.2)';
+                    icon.style.transition = 'transform 0.3s ease';
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    const icon = btn.querySelector('i');
+                    icon.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
